@@ -1,0 +1,194 @@
+version: '3.8'
+
+services:
+
+#  # Database server
+#  mydbserver:
+#    image: postgres:15-alpine
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: admin
+#    ports:
+#      - "5433:5432"
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+
+  # Discovery Service
+  discovery:
+    image: eureka:v2
+    ports:
+      - 8761:8761
+
+  # API Gateway
+  gateway:
+    image: gateway:v3
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+    depends_on:
+      - discovery
+    ports:
+      - 8090:8090
+
+  # IAM Service
+  iam:
+    image: iam:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/iam
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8091:8091
+
+  # profile Service
+  profile:
+    image: profiles:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/profile
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8101:8101
+
+  # products Service
+  products:
+    image: products:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/products
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8099:8099
+
+
+  # scheduling Service
+  scheduling:
+    image: schedules:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/scheduling
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8095:8095
+
+  # wishlist Service
+  wishlist:
+    image: wishlist:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/wishlist
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8096:8096
+
+  # cart Service
+  cart:
+    image: cart:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/cart
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8097:8097
+
+  # order Service
+  order:
+    image: order:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/order
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8094:8094
+
+  # payments Service
+  payments:
+    image: payments:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/payments
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8098:8098
+
+  # advisories Service
+  advisories:
+    image: advisories:v3
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/advisories2
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8092:8092
+
+  # appointments Service
+  appointments:
+    image: appointments:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/appointments
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8093:8093
+
+  # ratings Service
+  ratings:
+    image: ratings:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/ratings
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8100:8100
+
+  # shipping Service
+  shipping:
+    image: shipping:v2
+
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - DATASOURCE_URL=jdbc:postgresql://azure-pcmaster.postgres.database.azure.com:5432/shipping
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=@Andorla0204
+   
+    ports:
+      - 8102:8102
+
+
+# Volumes
+volumes:
+  postgres_data:
+
